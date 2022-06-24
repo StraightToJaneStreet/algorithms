@@ -43,8 +43,8 @@ function mergeSortInternal(arr, cmp) {
 
   const median = Math.floor(arr.length / 2);
 
-  const leftPart = mergeSort(arr.splice(0, median), cmp);
-  const rightPart = mergeSort(arr, cmp);
+  const leftPart = mergeSortInternal(arr.splice(0, median), cmp);
+  const rightPart = mergeSortInternal(arr, cmp);
 
   return merge(leftPart, rightPart, cmp);
 }
