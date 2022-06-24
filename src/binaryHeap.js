@@ -26,6 +26,8 @@ exports.Heap = class Heap {
     }
 
     this.#storage[position] = element;
+
+    return position;
   }
 
   #shiftDown(position) {
@@ -60,7 +62,8 @@ exports.Heap = class Heap {
 
   push(element) {
     this.#storage.push(element);
-    this.#shiftUp(this.#storage.length - 1);
+    const position = this.#shiftUp(this.#storage.length - 1);
+    this.#shiftDown(position);
     return element;
   }
 
@@ -74,10 +77,27 @@ exports.Heap = class Heap {
     const result = this.#storage[0];
     this.#storage[0] = this.#storage.pop();
     this.#shiftDown(0);
+
+    console.log(this.dumpStorage());
     return result;
   }
 
   #isLess(a, b) {
     return this.#cmp(a, b) < 0;
   }
+
+  dumpStorage() { return this.#storage }
 }
+
+const cmp = (a, b) => b - a;
+const input = [10, 1, 2, 3, 4, 1, 8, 4, 3, 2, 1, 2, 9];
+const heap = new exports.Heap(cmp);
+
+input.reduce((heap, element) => { heap.push(element); return heap; }, heap);
+console.log(heap.dumpStorage());
+
+let element;
+while ((element = heap.pop()) !== undefined) {
+  console.log(element);
+}
+console.log(Array.from(input).sort(cmp));
